@@ -1,0 +1,91 @@
+unit uForm_StringGrid;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf,
+  FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
+  FireDAC.Phys, FireDAC.Phys.MySQL, FireDAC.Phys.MySQLDef, FireDAC.VCLUI.Wait,
+  Data.DB, FireDAC.Comp.Client, FireDAC.DApt;
+
+type
+  TForm1 = class(TForm)
+    StringGrid1: TStringGrid;
+    btn_Configurar: TButton;
+    FDConnection1: TFDConnection;
+    procedure btn_ConfigurarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.btn_ConfigurarClick(Sender: TObject);
+var
+  Q: TFDQuery;
+  I, J: Integer;
+begin
+  // Configuracao do Grid
+  StringGrid1.ColCount := 12; // 12 colunas
+  StringGrid1.RowCount := 5;  // Inicialmente 5 linhas (ajustaremos conforme os dados)
+
+  // Cabeçalhos da StringGrid
+  StringGrid1.Cells[0,0] := 'Id';
+  StringGrid1.Cells[1,0] := 'Produto';
+  StringGrid1.Cells[2,0] := 'Previsto';
+  StringGrid1.Cells[3,0] := 'PG';
+  StringGrid1.Cells[4,0] := 'Gasto';
+  StringGrid1.Cells[5,0] := 'Valor a mais';
+  StringGrid1.Cells[6,0] := 'Vencimento';
+  StringGrid1.Cells[7,0] := 'Data';
+  StringGrid1.Cells[8,0] := 'Categoria';
+  StringGrid1.Cells[9,0] := 'Forma de Pagamento';
+  StringGrid1.Cells[10,0] := 'Referente';
+  StringGrid1.Cells[11,0] := 'Data Inserimento';
+
+  // Tamanhos das colunas
+  for J := 0 to StringGrid1.ColCount - 1 do
+    StringGrid1.ColWidths[J] := 100;
+
+  // Criar a query para buscar os dados
+  Q := TFDQuery.Create(Self);
+  try
+    Q.Connection := FDConnection1;
+    Q.SQL.Text := 'SELECT * FROM gastos_essenciais';
+    Q.Open;
+
+    // Ajustar o número de linhas da StringGrid de acordo com o número de registros retornados
+    StringGrid1.RowCount := Q.RecordCount + 1;  // +1 por causa dos cabeçalhos na linha 0
+
+    // Loop para preencher as linhas (registros)
+    I := 1;  // Começamos da linha 1, já que a linha 0 é para cabeçalhos
+    while not Q.Eof do
+    begin
+      // Loop para preencher as colunas (campos de cada registro)
+      for J := 0 to StringGrid1.ColCount - 1 do
+      begin
+        // Preenchemos cada célula com o valor do campo correspondente
+        StringGrid1.Cells[J, I] := Q.Fields[J].AsString;
+      end;
+
+      // Passa para o próximo registro no banco
+      Q.Next;
+      Inc(I); // Passa para a próxima linha da StringGrid
+    end;
+
+  finally
+    Q.Free;
+  end;
+end;
+
+
+end.

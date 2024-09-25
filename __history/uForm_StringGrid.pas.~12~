@@ -1,0 +1,73 @@
+unit uForm_StringGrid;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf,
+  FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
+  FireDAC.Phys, FireDAC.Phys.MySQL, FireDAC.Phys.MySQLDef, FireDAC.VCLUI.Wait,
+  Data.DB, FireDAC.Comp.Client;
+
+type
+  TForm1 = class(TForm)
+    StringGrid1: TStringGrid;
+    btn_Configurar: TButton;
+    FDConnection1: TFDConnection;
+    procedure btn_ConfigurarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.btn_ConfigurarClick(Sender: TObject);
+begin
+  // Configuracao do Grid
+  StringGrid1.ColCount := 4;
+  StringGrid1.RowCount := 5;
+  StringGrid1.FixedCols := 0;
+  StringGrid1.FixedRows := 1;
+
+  //Coluna, linha
+  StringGrid1.Cells [0,0] := 'Nome';
+  StringGrid1.Cells [1,0] := 'Sobrenome';
+  StringGrid1.Cells [2,0] := 'Idade';
+  StringGrid1.Cells [3,0] := 'Telefone';
+
+  //Tamanhos Variaveis
+  StringGrid1.ColWidths[0] := 100;
+  StringGrid1.ColWidths[1] := 100;
+  StringGrid1.ColWidths[2] := 60;
+  StringGrid1.ColWidths[3] := 100;
+
+  //Preenchendo as colunas *OBS Coluna ja foi Preenchida entao vamos as linhas!
+  // 1º Linha
+  StringGrid1.Cells [0,1] := 'Joao';
+  StringGrid1.Cells [1,1] := 'Lopes';
+  StringGrid1.Cells [2,1] := '32';
+  StringGrid1.Cells [3,1] := '3761155010';
+
+  //2º Linha
+  StringGrid1.Cells [0,2] := 'Mario';
+  StringGrid1.Cells [1,2] := 'Rossi';
+  StringGrid1.Cells [2,2] := '45';
+  StringGrid1.Cells [3,2] := '000088855522';
+
+  //3º Linha
+  StringGrid1.Cells [0,3] := 'Alex';
+  StringGrid1.Cells [1,3] := 'Barberini';
+  StringGrid1.Cells [2,3] := '68';
+  StringGrid1.Cells [3,3] := '3589652356';
+
+end;
+
+end.
