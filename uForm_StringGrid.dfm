@@ -18,8 +18,6 @@ object Form1: TForm1
     Height = 369
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 72
-    ExplicitWidth = 624
   end
   object btn_Configurar: TButton
     Left = 429

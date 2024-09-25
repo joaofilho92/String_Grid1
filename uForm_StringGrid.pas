@@ -71,15 +71,15 @@ begin
     while not Q.Eof do
     begin
       // Loop para preencher as colunas (campos de cada registro)
-      for J := 0 to StringGrid1.ColCount - 1 do
+      for J := 0 to StringGrid1.ColCount - 1 do // J esta para as colunas ou seja de 0 ate o ultimo valor que e 'StringGrid1.ColCount - 1' / O Sistema faz a conta para ti!
       begin
         // Preenchemos cada célula com o valor do campo correspondente
-        StringGrid1.Cells[J, I] := Q.Fields[J].AsString;
+        StringGrid1.Cells[J, I] := Q.Fields[J].AsString;  // J esta para as colunas e I para as linhas, depois ele chama J novamente para indicar o numero de coulunas.
       end;
 
       // Passa para o próximo registro no banco
       Q.Next;
-      Inc(I); // Passa para a próxima linha da StringGrid
+      Inc(I); // Passa para a próxima linha da StringGrid ESSENCIAL isso eu NAO SABIA se nao ele da sempre o 1 record e o unico!
     end;
 
   finally
